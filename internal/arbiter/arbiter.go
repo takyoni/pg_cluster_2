@@ -26,7 +26,7 @@ func RunArbiter(ct *cluster.Replicas) {
 
 func (s *Server) MasterStatus(c *gin.Context) {
 	result := s.ct.CheckMaster()
-	log.Info().Bool("result", result).Msg("Check Master")
+	//log.Info().Bool("result", result).Msg("Check Master")
 
 	if !result {
 		c.JSON(http.StatusBadGateway, gin.H{"master": result})

@@ -29,8 +29,8 @@ func Setup() {
 	output.FormatFieldValue = func(i interface{}) string {
 		return strings.ToUpper(fmt.Sprintf("%s", i))
 	}
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: runLogFile})
+	//log.Logger = log.Output(zerolog.ConsoleWriter{Out: runLogFile})
 
-	//multi := zerolog.MultiLevelWriter(output, runLogFile)
-	// log.Logger = zerolog.New(multi).With().Timestamp().Logger()
+	multi := zerolog.MultiLevelWriter(os.Stdout, output)
+	log.Logger = zerolog.New(multi).With().Timestamp().Logger()
 }

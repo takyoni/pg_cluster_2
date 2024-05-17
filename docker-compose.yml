@@ -3,7 +3,9 @@ version: '2'
 
 services:
   pg-master:
-    build: '.'
+    build:
+        context: .
+        dockerfile: Dockerfile.agent
     image: 'postgres-replication'
     restart: 'always'
     cap_add:
@@ -17,7 +19,9 @@ services:
      - '5432'
 
   pg-slave:
-    build: '.'
+    build:
+        context: .
+        dockerfile: Dockerfile.agent
     image: 'postgres-replication'
     restart: 'always'
     cap_add:
@@ -32,24 +36,28 @@ services:
     links:
      - 'pg-master'
   pg-arbiter:
-    build: '.'
-    image: 'postgres-replication'
+    build:
+        context: .
+        dockerfile: Dockerfile.keeper
+    image: 'postgres-keeper'
     restart: 'always'
     cap_add:
       - NET_ADMIN
     volumes:
-     - ./docker/configs/arbiter.env:/app.env
+     - ./docker/configs/arbiter.env:/app/.env
      - '/var/lib/postgresql/data'
     expose:
      - '5432'
   pg-writer:
-    build: '.'
-    image: 'postgres-replication'
+    build:
+        context: .
+        dockerfile: Dockerfile.keeper
+    image: 'postgres-keeper'
     restart: 'always'
     cap_add:
       - NET_ADMIN
     volumes:
-     - ./docker/configs/writer.env:/app.env
+     - ./docker/configs/writer.env:/app/.env
      - '/var/lib/postgresql/data'
     expose:
      - '5432'
@@ -65,3 +73,5 @@ services:
     ports:
       - "${PGADMIN_PORT:-5050}:80"
     restart: unless-stopped
+    depends_on:
+      - pg-master

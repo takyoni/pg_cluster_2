@@ -25,8 +25,8 @@ func main() {
 	log.Info().Msg("Success parsed config")
 
 	cluster := ct.Init(config)
-	defer cluster.Close()
-
+	//defer cluster.Close()
+	log.Info().Str("Role", config.ROLE).Msg("")
 	switch strings.ToLower(config.ROLE) {
 	case "arbiter":
 		arb.RunArbiter(cluster)

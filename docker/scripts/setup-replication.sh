@@ -7,7 +7,7 @@ wal_level = hot_standby
 max_wal_senders = $PG_MAX_WAL_SENDERS
 wal_keep_segments = $PG_WAL_KEEP_SEGMENTS
 hot_standby = on
-synchronous_commit = on
+synchronous_commit = $PG_SYNC_MOD
 EOF
 
 else

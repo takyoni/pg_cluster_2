@@ -1,11 +1,11 @@
 module agent
 
-go 1.21.6
+go 1.21.8
 
 require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/joho/godotenv v1.5.1
-	github.com/knadh/koanf v1.5.0
+	github.com/knadh/koanf/providers/env v0.1.0
 	github.com/knadh/koanf/v2 v2.1.1
 	github.com/lib/pq v1.10.9
 	github.com/pkg/errors v0.9.1
@@ -26,6 +26,7 @@ require (
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
+	github.com/knadh/koanf/maps v0.1.1 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect

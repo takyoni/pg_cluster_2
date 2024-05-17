@@ -41,15 +41,29 @@ func RunMaster(ct *cluster.Replicas) {
 func RunServer(ct *cluster.Replicas) {
 	server := gin.Default()
 	server.GET("/shurdown", Shutdown)
+	server.GET("/accept", Accept)
 
 	server.Run(":8080")
 }
 func Shutdown(c *gin.Context) {
-	cmd := exec.Command("iptables", "-P", "INPUT", "DROP")
+	err := exec.Command("iptables", "-P", "INPUT", "-p", "tcp", "--dport", "5432", "-j", "DROP").Run()
+	//cmd := exec.Command("iptables", "-A", "INPUT", "DROP")
+	if err != nil {
+		log.Err(err).Msg("Cannot block input d5432 connections to Master")
+	}
+	err = exec.Command("iptables", "-P", "INPUT", "-p", "tcp", "--sport", "5432", "-j", "DROP").Run()
+	//cmd := exec.Command("iptables", "-A", "INPUT", "DROP")
+	if err != nil {
+		log.Err(err).Msg("Cannot block input s5432 connections to Master")
+	}
+
+}
+func Accept(c *gin.Context) {
+	cmd := exec.Command("iptables", "-F")
+	//cmd := exec.Command("iptables", "-A", "INPUT", "DROP")
 	err := cmd.Run()
 
 	if err == nil {
 		log.Info().Msg("Success block connections to Master")
 	}
-
 }
