@@ -20,10 +20,27 @@ func RunWriter(ct *cluster.Replicas, mh string) {
 	time.Sleep(5 * time.Second)
 	log.Info().Msg("Run as Writer")
 	ct.MasterConn.Exec("CREATE TABLE IF NOT EXISTS test (id integer PRIMARY KEY);")
-	Test(ct)
+	FirstTest(ct)
+	SecondTest(ct)
 }
+func FirstTest(ct *cluster.Replicas) {
+	log.Info().Msg("Run first test")
+	db := ct.MasterConn
+	for i := 0; i < 10000; i++ {
+		if !Write(db, i) {
+			log.Error().Msg("Cannot write line to DB")
+		}
+		if i == 5000 {
+			log.Info().Msg("Shutdown slave")
 
-func Test(ct *cluster.Replicas) {
+			http.Get("http://pg-slave:8080/shutdown")
+		}
+	}
+	http.Get("http://pg-slave:8080/accept")
+
+	ShowResults()
+}
+func SecondTest(ct *cluster.Replicas) {
 	log.Info().Msg("Run second test")
 	db := ct.MasterConn
 	for i := 0; i < 1000000; i++ {
@@ -59,4 +76,6 @@ func Write(db *sql.DB, number int) bool {
 func ShowResults() {
 	log.Info().Int("Accepted: ", Accept).Msg("Results")
 	log.Info().Int("Dropped: ", Dropped).Msg("Results")
+	Accept = 0
+	Dropped = 0
 }
