@@ -23,6 +23,8 @@
 
 # Запуск
 
+Режим ```synchronous_commit``` задается через переменную PG_SYNC_MOD в env файлах master и slave.
+
 ```
 docker compose up --build
 ```
