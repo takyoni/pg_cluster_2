@@ -68,7 +68,6 @@ func (r *Replicas) CheckMaster() bool {
 	if err != nil {
 		log.Err(err).Msg("Check Master")
 	}
-	//log.Info().Bool("result", err == nil).Msg("Check Master")
 	return err == nil
 }
 
@@ -77,7 +76,6 @@ func (r *Replicas) CheckSlave() bool {
 	if err != nil {
 		log.Err(err).Msg("Check Slave")
 	}
-	//log.Info().Bool("result", err == nil).Msg("Check Master")
 	return err == nil
 }
 
@@ -93,7 +91,6 @@ func (r *Replicas) CheckAM() (bool, error) {
 		log.Info().Bool("result", false).Msg("Check Arbiter")
 		return false, nil
 	}
-	log.Info().Bool("result", true).Msg("Check Arbiter")
 	return true, nil
 }
 
@@ -109,7 +106,6 @@ func (r *Replicas) CheckArbiter() (bool, error) {
 		log.Info().Bool("result", false).Msg("Check Arbiter")
 		return false, nil
 	}
-	//log.Info().Bool("result", true).Msg("Check Arbiter")
 	return true, nil
 }
 

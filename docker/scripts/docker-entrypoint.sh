@@ -48,7 +48,7 @@ if [ "$1" = 'postgres' ]; then
                 #	echo "Waiting for master to ping..."
                 #	sleep 1s
             	#done
-            	until gosu postgres pg_basebackup -h ${REPLICATE_FROM} -D ${PGDATA} -U ${POSTGRES_USER} -vP -w
+            	until gosu postgres pg_basebackup -P -R -X stream -c fast -h ${REPLICATE_FROM} -D ${PGDATA} -U ${POSTGRES_USER}
             	do
                 	echo "Waiting for master to connect..."
                 	sleep 1s

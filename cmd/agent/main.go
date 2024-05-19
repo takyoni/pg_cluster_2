@@ -25,7 +25,7 @@ func main() {
 	log.Info().Msg("Success parsed config")
 
 	cluster := ct.Init(config)
-	//defer cluster.Close()
+	defer cluster.Close()
 	log.Info().Str("Role", config.ROLE).Msg("")
 	switch strings.ToLower(config.ROLE) {
 	case "arbiter":
@@ -35,6 +35,6 @@ func main() {
 	case "slave":
 		sl.RunSlave(cluster)
 	case "writer":
-		wr.RunWriter(cluster)
+		wr.RunWriter(cluster, config.MASTER_HOST)
 	}
 }

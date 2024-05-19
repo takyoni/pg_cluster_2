@@ -17,7 +17,8 @@ func RunArbiter(ct *cluster.Replicas) {
 	log.Info().Msg("Run as Arbiter")
 	handler := &Server{ct: ct}
 
-	server := gin.Default()
+	server := gin.New()
+	server.Use(gin.Recovery())
 	server.GET("/master", handler.MasterStatus)
 	server.GET("/ping", handler.Ping)
 
@@ -26,8 +27,6 @@ func RunArbiter(ct *cluster.Replicas) {
 
 func (s *Server) MasterStatus(c *gin.Context) {
 	result := s.ct.CheckMaster()
-	//log.Info().Bool("result", result).Msg("Check Master")
-
 	if !result {
 		c.JSON(http.StatusBadGateway, gin.H{"master": result})
 	} else {
@@ -36,6 +35,5 @@ func (s *Server) MasterStatus(c *gin.Context) {
 }
 
 func (s *Server) Ping(c *gin.Context) {
-	//log.Info().Str("client ip", c.ClientIP()).Msg("Received ping")
 	c.JSON(http.StatusOK, "pong")
 }
